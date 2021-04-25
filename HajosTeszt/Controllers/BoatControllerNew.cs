@@ -8,20 +8,10 @@ using System.Threading.Tasks;
 
 namespace HajosTeszt.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class BoatController : ControllerBase
+    public class BoatControllerNew : ControllerBase
     {
-        [HttpGet]
-        [Route("questions/all")]
-        public ActionResult M1()
-        {
-            HajostesztContext context = new HajostesztContext();
-            var kérdések = from x in context.Questions select x.QuestionText;
-
-            return new JsonResult(kérdések);
-        }
-
         [HttpGet]
         [Route("questions/{sorszám}")]
         public ActionResult M2(int sorszám)
@@ -35,10 +25,49 @@ namespace HajosTeszt.Controllers
 
             return new JsonResult(kérdés);
         }
+       
+        function kérdésBetöltés(id)
+        {
+            fetch(`/ questions /${ id}`)
+        .then(válaszfeldolgozás)
+        .then(kérdésMegjelenítés);
+        }
+
+
+        function válaszfeldolgozás(válasz)
+        {
+            if (!válasz.ok)
+            {
+                console.error(`Hibás válasz: ${ response.status}`)
+    }
+            else
+            {
+                return válasz.json()
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
     }
-
 }
