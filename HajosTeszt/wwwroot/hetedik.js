@@ -28,23 +28,37 @@ function letöltésBefejeződött(d) {
     kerdesMegjelenites(0)
 }
 
-function kerdesMegjelenites() {
+fetch('/questions/4')
+    .then(response => response.json())
+    .then(data => console.log(data)
+);
 
-    let kérdés_szöveg = document.getElementById("kérdés_szöveg");
-    let elem = document.createElement("div");
-    kérdés_szöveg.innerHTML = kérdések[sorszam].questionText
-    kérdés_szöveg.appendChild(elem);
+fetch('/questions/1')
+    .then(response => response.json())
+    .then(data => kérdésMegjelenítés(data)
+    );
 
-
-    let kép = document.getElementById("kép");
-    let válasz1 = document.getElementById("válasz1");
-    let válasz2 = document.getElementById("válasz2");
-    let válasz3 = document.getElementById("válasz3");
-    kép.src = "https://szoft1.comeback.hu/hajo/" + kérdések[sorszam].image;
-    válasz1.innerText = kérdések[sorszam].answer1;
-    válasz2.innerText = kérdések[sorszam].answer2;
-    válasz3.innerText = kérdések[sorszam].answer3;
+function kérdésMegjelenítés(kérdés) {
+    console.log(kérdés);
+    document.getElementById("kérdés_szöveg").innerText = kérdés.questionText
+    document.getElementById("válasz1").innerText = kérdés.answer1
+    document.getElementById("válasz2").innerText = kérdés.answer2
+    document.getElementById("válasz3").innerText = kérdés.answer3
+    document.getElementById("kép").src = "https://szoft1.comeback.hu/hajo/" + kérdés.image;
 }
+
+function kérdésBetöltés(id) {
+    fetch(`/questions/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                console.error(`Hibás válasz: ${response.status}`)
+            }
+            else {
+                return response.json()
+            }
+        })
+        .then(data => kérdésMegjelenítés(data));
+}    
 
 function vissza() {
     if (sorszam == 0) {
@@ -70,37 +84,11 @@ function elore() {
     }
 }
 
-function ellenorzes() {
-    let helyes = kérdések[sorszam].correctAnswer;
-    console.log(helyes)
-
-    if (helyes == 1) {
-        válasz1.style.backgroundColor = "#b3ffc3";
-        válasz1.style.color = "#287674";
-        válasz2.style.backgroundColor = "#fdc6c6";
-        válasz2.style.color = "#287674";
-        válasz3.style.backgroundColor = "#fdc6c6";
-        válasz3.style.color = "#287674";
+function ellenorzes(válasz) {
+    if (!válasz.ok) {
+        console.error(`Hibás válasz: ${response.status}`)
     }
-
-
-    if (helyes == 2) {
-        válasz1.style.backgroundColor = "#fdc6c6";
-        válasz1.style.color = "#287674";
-        válasz2.style.backgroundColor = "#b3ffc3";
-        válasz2.style.color = "#287674";
-        válasz3.style.backgroundColor = "#fdc6c6";
-        válasz3.style.color = "#287674";
+    else {
+        return válasz.json()
     }
-
-
-    if (helyes == 3) {
-        válasz1.style.backgroundColor = "#fdc6c6";
-        válasz1.style.color = "#287674";
-        válasz2.style.backgroundColor = "#fdc6c6";
-        válasz2.style.color = "#287674";
-        válasz3.style.backgroundColor = "#b3ffc3";
-        válasz3.style.color = "#287674";
-    }
-
 }
